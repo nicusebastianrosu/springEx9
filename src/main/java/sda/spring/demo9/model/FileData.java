@@ -8,7 +8,7 @@ import java.util.UUID;
 public class FileData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     private UUID id;
 
     @Column(name = "file_name")
