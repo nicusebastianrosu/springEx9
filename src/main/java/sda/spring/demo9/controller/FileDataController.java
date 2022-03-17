@@ -1,6 +1,7 @@
 package sda.spring.demo9.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sda.spring.demo9.model.FileData;
 import sda.spring.demo9.repository.FileDataRepository;
@@ -40,6 +41,26 @@ public class FileDataController {
         }else{
             return null;
         }
+    }
+
+    @PutMapping("/api/files-data/{id}")
+    public FileData getAllData(@RequestBody FileData fileData, @PathVariable("id") UUID uuid) {
+        Optional<FileData> fileDataOptional =  fileDataRepository.findById(uuid);
+        if(fileDataOptional.isPresent()){
+            //Verificam daca pe entitatea noastra avem id, ca sa putem sa facem merge
+            if (fileData.getId() ==null){
+                fileData.setId(uuid);
+            }
+            return fileDataRepository.save(fileData);
+        }else{
+            return null;
+        }
+    }
+
+    @DeleteMapping("/api/files-data/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete (@PathVariable UUID id){
+        fileDataRepository.deleteById(id);
     }
 
 }
