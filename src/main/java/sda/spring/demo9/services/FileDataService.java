@@ -9,6 +9,7 @@ import sda.spring.demo9.repository.FileDataRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,12 +21,26 @@ public class FileDataService {
         return new ArrayList<FileData>(fileDataRepository.findAll());
     }
 
-    public FileData findById(final UUID uuid){
-        return fileDataRepository.findById(uuid).orElseThrow(() ->new NotFoundException("Object not found: "+ String.valueOf(uuid)));
+    public FileData findById(final UUID uuid) {
+        return fileDataRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Object not found: " + String.valueOf(uuid)));
     }
 
-    public FileData create(FileData fileData){
+    public FileData create(FileData fileData) {
         fileData.setId(null);
         return fileDataRepository.save(fileData);
+    }
+
+    public void delete(final UUID id) {
+        fileDataRepository.findById(id).orElseThrow(() -> new SdaException("Cannot delete non existing file data"));
+        fileDataRepository.deleteById(id);
+    }
+
+    public void update(UUID id, FileData fileData) {
+        FileData existingFileData = fileDataRepository.findById(id)
+                .orElseThrow(() -> new SdaException("Cannot update non existing file data"));
+        existingFileData.setFileName(fileData.getFileName());
+        existingFileData.setExtension(fileData.getExtension());
+        existingFileData.setSizeInKb(fileData.getSizeInKb());
+        fileDataRepository.save(existingFileData);
     }
 }

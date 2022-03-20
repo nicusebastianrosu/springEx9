@@ -38,12 +38,19 @@ public class FileDataController {
 
     @GetMapping("/{id}")
     public FileData getAllData(@PathVariable("id") UUID uuid) {
+
         return fileDataService.findById(uuid);
     }
 
     @PostMapping("/")
     public ResponseEntity<FileData> create(@RequestBody FileData fileData) throws URISyntaxException {
-         return ResponseEntity.created(new URI(API_FILES_DATA+"/" + fileDataService.create(fileData).getId())).build();
+        return ResponseEntity.created(new URI(API_FILES_DATA + "/" + fileDataService.create(fileData).getId())).build();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody FileData fileData, @PathVariable("id") UUID id) {
+        fileDataService.update(id, fileData);
     }
 
 //    @PutMapping("/{id}")
@@ -66,17 +73,23 @@ public class FileDataController {
 //        fileDataRepository.deleteById(id);
 //    }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable final UUID id) {
+        fileDataService.delete(id);
+    }
+
     @ExceptionHandler(SdaException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleSdaException(final SdaException exception){
-        log.error(exception.getMessage(),exception);
+    public String handleSdaException(final SdaException exception) {
+        log.error(exception.getMessage(), exception);
         return exception.getMessage();
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleNotFoundException(final NotFoundException exception){
-        log.error(exception.getMessage(),exception);
+    public String handleNotFoundException(final NotFoundException exception) {
+        log.error(exception.getMessage(), exception);
         return exception.getMessage();
     }
 

@@ -14,6 +14,7 @@ public class FileData {
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "extension")
     private String extension;
 
     @Column(name = "size_in_kb")
@@ -23,6 +24,7 @@ public class FileData {
     }
 
     public UUID getId() {
+
         return id;
     }
 
@@ -31,26 +33,32 @@ public class FileData {
     }
 
     public String getFileName() {
+
         return fileName;
     }
 
     public void setFileName(String fileName) {
+
         this.fileName = fileName;
     }
 
     public String getExtension() {
+
         return extension;
     }
 
     public void setExtension(String extension) {
+
         this.extension = extension;
     }
 
     public Long getSizeInKb() {
+
         return sizeInKb;
     }
 
     public void setSizeInKb(Long sizeInKb) {
+
         this.sizeInKb = sizeInKb;
     }
 }
